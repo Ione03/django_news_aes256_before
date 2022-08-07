@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />    
+    <title>World Time</title>
+
+    <!-- plugin css for this page -->
+    {% include 'news/snippets/style.html' %}
+
+    {% block style %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <div class="main-panel">
+        <!-- partial:partials/_navbar.html -->
+        {% include 'news/snippets/navbar.html' %}
+
+        <!-- partial -->        
+        {% block flash-news %}{% endblock %}
+
+        <div class="content-wrapper">
+          <div class="container">
+
+            {% block highlight %}{% endblock %}
+
+            {% block categories %}{% endblock %}
+
+            {% block videos %}{% endblock %}            
+
+          </div>
+        </div>
+        <!-- main-panel ends -->
+        <!-- container-scroller ends -->
+
+        <!-- partial:partials/_footer.html -->
+        <footer>
+          {% block footer %}{% endblock %}
+
+          {% include 'news/snippets/footer-bottom.html' %}
+        </footer>
+
+        <!-- partial -->
+      </div>
+    </div>
+
+    {% include 'news/snippets/script.html' %}    
+
+    {% block script %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,258 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+
+{% block style %}
+{% endblock %}
+
+
+{% block highlight %}
+
+  <div class="row" data-aos="fade-up">
+    <!-- <div class="col-xl-8 stretch-card grid-margin">
+      <div class="position-relative">
+          {% for i in news|slice:":1" %}                  
+            <img
+              src="/media/{{i.foto}}"
+              alt="banner"
+              class="img-fluid"
+            />
+            <div class="banner-content">
+              <div class="badge badge-danger fs-12 font-weight-bold mb-3">
+                {{i.category|title}}
+              </div>
+              <h1 class="mb-0">{{i.title|upper|truncatechars:30}}</h1>
+              <h1 class="mb-2">
+                {{i.content|safe|truncatechars:20}}
+              </h1>
+              <div class="fs-12">
+                <span class="mr-2">Post</span>{{i.created_at}}
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+    </div> -->
+
+    <div class="col-xl-12 stretch-card grid-margin ">
+      <div class="card  ">
+        <div class="card-body "> 
+          <!-- <div class="card-body"> error-wrap-->
+          <div class="text-center ">
+       
+            <div class="error-title count-down "></div>
+            <p >
+              <h2><a href="/redirect-link/{{enc_link}}?id={{id}}">{{request.scheme}}://{{domain}}/redirect-link/{{enc_link}}?id={{id}}</a></h2>
+            </p>
+            <p class="fs-15">
+              <h1>This link will expired in limited time ...</h1>
+            </p>
+
+            <!-- http://127.0.0.1:8000/download-link/077b5102-db00-4503-b757-9a03db3013da# -->
+            <!-- <div class="search-container">
+              <input type="text" placeholder="Search.." name="search" />
+              <button type="submit"><i class="mdi mdi-magnify"></i></button>
+            </div> -->
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+{% endblock %}
+
+
+{% block script %}
+
+  <script>
+    $(document).ready(function() {
+      // console.log('enter : ');
+
+      // Set the date we're counting down to
+      // var countDownDate = new Date("Aug 5, 2022 15:37:25").getTime();
+      {% if not expired %}
+        var expired_link = {{expired_link}};
+        console.log(expired_link);
+
+        var countDownDate = new Date().getTime() + 1000 * expired_link;
+        
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+        
+          // Get today's date and time
+          var now = new Date().getTime();
+            
+          // Find the distance between now and the count down date
+          var distance = countDownDate - now;
+            
+          // Time calculations for days, hours, minutes and seconds
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+          // console.log($(".count-down"));
+
+          // Output the result in an element with id="demo"
+          $(".count-down").text(days + " days " + hours + ":"
+          + minutes + ":" + seconds + "");
+            
+          // If the count down is over, write some text 
+          if (distance < 0) {
+            clearInterval(x);
+            $(".count-down").text("EXPIRED");
+
+            // window.location.href = "/set-inactive-link/{{enc_link}}?id={{id}}";
+            $.ajax({
+                url: "/set-inactive-link/{{enc_link}}?id={{id}}",
+                success: function(result){                    
+                    alert('Download link was expired!');
+                }
+            });  
+          }
+        }, 1000);
+
+      {% else %}
+        $(".count-down").text("EXPIRED");
+      {% endif %}
+    });
+
+  </script>
+
+{% endblock %}
+
+
+{% block footer %}
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-5">
+          <img src="{% static '/news/assets/images/logo.svg' %}" class="footer-logo" alt="" />
+          <h5 class="font-weight-normal mt-4 mb-5">
+            Newspaper is your news, entertainment, music fashion website. We
+            provide you with the latest breaking news and videos straight from
+            the entertainment industry.
+          </h5>
+          <ul class="social-media mb-3">
+            <li>
+              <a href="#">
+                <i class="mdi mdi-facebook"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="mdi mdi-youtube"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="mdi mdi-twitter"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <h3 class="font-weight-bold mb-3">RECENT POSTS</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="footer-border-bottom pb-2">
+                <div class="row">
+                  <div class="col-3">
+                    <img
+                      src="{% static '/news/assets/images/dashboard/home_1.jpg' %}"
+                      alt="thumb"
+                      class="img-fluid"
+                    />
+                  </div>
+                  <div class="col-9">
+                    <h5 class="font-weight-600">
+                      Cotton import from USA to soar was American traders
+                      predict
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="footer-border-bottom pb-2 pt-2">
+                <div class="row">
+                  <div class="col-3">
+                    <img
+                      src="{% static '/news/assets/images/dashboard/home_2.jpg' %}"
+                      alt="thumb"
+                      class="img-fluid"
+                    />
+                  </div>
+                  <div class="col-9">
+                    <h5 class="font-weight-600">
+                      Cotton import from USA to soar was American traders
+                      predict
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div>
+                <div class="row">
+                  <div class="col-3">
+                    <img
+                      src="{% static '/news/assets/images/dashboard/home_3.jpg' %}"
+                      alt="thumb"
+                      class="img-fluid"
+                    />
+                  </div>
+                  <div class="col-9">
+                    <h5 class="font-weight-600 mb-3">
+                      Cotton import from USA to soar was American traders
+                      predict
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <h3 class="font-weight-bold mb-3">CATEGORIES</h3>
+          <div class="footer-border-bottom pb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 font-weight-600">Magazine</h5>
+              <div class="count">1</div>
+            </div>
+          </div>
+          <div class="footer-border-bottom pb-2 pt-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 font-weight-600">Business</h5>
+              <div class="count">1</div>
+            </div>
+          </div>
+          <div class="footer-border-bottom pb-2 pt-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 font-weight-600">Sports</h5>
+              <div class="count">1</div>
+            </div>
+          </div>
+          <div class="footer-border-bottom pb-2 pt-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 font-weight-600">Arts</h5>
+              <div class="count">1</div>
+            </div>
+          </div>
+          <div class="pt-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 font-weight-600">Politics</h5>
+              <div class="count">1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
