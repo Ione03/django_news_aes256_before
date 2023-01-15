@@ -10,7 +10,7 @@ from django.db.models import OuterRef, Subquery
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
-from pyaes256 import PyAES256  # Our Library
+#from pyaes256 import PyAES256  # Our Library
 
 from .models import *
 from .utils import get_ip
@@ -484,20 +484,20 @@ def download_link(request, pk=None):
             # print('doc filepath = ')
             # print(doc.file_path.url)
 
-            aes256 = PyAES256()
-            enc = aes256.encrypt(doc.file_path.url, secret_key)
+            #aes256 = PyAES256()
+            #enc = aes256.encrypt(doc.file_path.url, secret_key)
             # print('result = ')
             # print(enc)
             # simpan signature for decrypt process
             
 
             # Ubah data dengan type byte menjadi string
-            enc['salt'] = bytes.decode(enc['salt'])
-            enc['iv'] = bytes.decode(enc['iv'])
+            #enc['salt'] = bytes.decode(enc['salt'])
+            #enc['iv'] = bytes.decode(enc['iv'])
             # print('result_after = ')
             # print(enc)
 
-            signature = signing.dumps(enc, key=secret_key, compress=True)
+            #signature = signing.dumps(enc, key=secret_key, compress=True)
             # a = enc['iv']
             # print(codecs.encode(a,'utf-8'))
             # signing ada key, salt
@@ -506,11 +506,11 @@ def download_link(request, pk=None):
             # url adalah data yg di signing
 
             # enc_link = signing.dumps(enc['url'], key=enc['iv'], salt=enc['salt'], compress=True)
-            enc_link = enc['url'].replace('=', '-')
+            #enc_link = enc['url'].replace('=', '-')
             # print('result enc_signing = ')
             # print(enc_link)
             # # enc_link = enc_link.replace(':','+')
-            context['enc_link'] = enc_link
+            #context['enc_link'] = enc_link
             
 
             # satu file download per session
@@ -566,15 +566,15 @@ def download_link(request, pk=None):
             # lanjutkan tampilkan count down di interface
             obj = obj.get()
             context['id'] = obj.id
-            context['enc_link'] = obj.enc_link
+            #context['enc_link'] = obj.enc_link
 
-            try:
-                signer = signing.loads(obj.signature, key=secret_key, max_age=expired_link)    
+            #try:
+            #    signer = signing.loads(obj.signature, key=secret_key, max_age=expired_link)    
                 # print('signer = ')
                 # print(signer)
-            except signing.BadSignature:
+            #except signing.BadSignature:
                 # print('bad dignature')
-                context['expired'] = 'expired'  # link is expired
+            #    context['expired'] = 'expired'  # link is expired
             
             # hitung sisa waktu berjalan untuk di tampilkan di interface
             # print('next ()')
