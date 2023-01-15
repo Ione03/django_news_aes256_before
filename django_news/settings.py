@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'django_news.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE'    : 'django.db.backends.mysql',
-        'NAME'      : 'db_news',         
+        'NAME'      : 'db_news_before',         
         'USER'      : 'root',
         'PASSWORD'  : '', 
         'HOST'      : '127.0.0.1',
