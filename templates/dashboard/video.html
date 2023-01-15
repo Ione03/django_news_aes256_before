@@ -1,0 +1,244 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main class="content">
+        <div class="container-fluid p-0">
+
+            <div class="row mb-2 mb-xl-3">
+                <div class="col-auto d-none d-sm-block">
+                    <h3><i class="align-middle" data-feather="credit-card"></i> &nbsp;<strong> Video</strong> Form</h3>
+                </div>
+
+                <div class="col-auto ms-auto text-end mt-n1">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">Dashboards</a></li> -->
+                            {% if mode == '' %}
+                                <li class="breadcrumb-item active" aria-current="page">Video Grid</li>
+                            {% elif mode|lower == 'add' or mode|lower == 'edit' %}
+                                <li class="breadcrumb-item"><a href="/dashboard/video">Video Grid</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{mode|title}}</li>                            
+                            {% endif %}
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                Video &nbsp;
+                                {% if mode == '' %}
+                                    <!-- <div class='toolbar text-right'> -->
+                                        <button onclick='do_add();' class='btn btn-success btn-xs' title='Add Data'> 
+                                            Add
+                                        </button>
+                                    <!-- </div> -->
+                                {% endif %}
+                            </h5>
+
+                            {% if formset_img.non_form_errors %}
+                                <div class="alert alertdanger">{{formset_img.non_form_errors}}</div>
+                            {% endif %}
+                            
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ field.label }}</strong><span>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            {% if mode == '' %}
+                                <table id="datatable_video" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th>                                                                                                         -->
+                                            <th>UUID</th>          
+                                            <th data-hide="expand">name</th>
+                                                                                    
+                                            <!-- <th data-hide="phone,tablet">Content</th>                                                    
+                                            <th data-hide="phone,tablet">Category</th>                                                     -->
+                                            <!-- <th data-hide="phone,tablet">Admin</th>                          -->
+                                            <!-- <th data-hide="phone,tablet">Satus</th>                                                     -->
+                                            <th data-hide="phone,tablet">Update</th>                                                
+                                            <th data-hide="expand">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                            {% elif mode|lower == 'add' or mode|lower == 'edit' %}
+                                <form class="form-horizontal" method="POST" enctype="multipart/form-data"> 
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <div class="col-12">                                            
+                                            
+                                            {{form.as_p}}                                                    
+                                            {{formset_img.as_p}}
+                                                
+                                            <div class="card">
+                                                <div class="card-body"> 
+                                                    <button class="btn btn-primary" type="submit" value="save" name="proses">                                                                								
+                                                        <i class="icon-prepend fa fa-save"></i> Save
+                                                    </button>
+                                                    <!--<button class="btn btn-success" type="submit" value="save_add_new" name="proses">                                                                								
+                                                        <i class="icon-prepend fa fa-save"></i> simpan & input baru
+                                                    </button>							-->
+                                                    <button class="btn btn-secondary" type="button" id="cancel-btn" value="cancel" name="proses">
+                                                        <i class="icon-prepend fa fa-ban"></i> Cancel                                                           
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            {% endif %}
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+{% endblock %}
+
+{% block custom-style %}
+    <style>
+
+        .table>tbody>tr>td {
+            vertical-align: text-top;
+        }
+        .table-bordered>:not(caption)>*>* {
+            border-width: 0em;
+        }
+        .table>:not(:last-child)>:last-child>* {
+            border-color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function do_delete(pk, pName) {
+            if (confirm('You are about to delete "'+ pName + '"?')) {
+                window.location.href = 'delete/' + pk;
+            };
+        }; 
+
+        function do_edit(pk) {                
+            window.location.href = 'edit/' + pk;             
+        }; 
+
+        function do_add() {                
+            window.location.href = 'add/'; 
+        }; 
+
+        // A $( document ).ready() block.
+        $(document).ready(function() {
+
+            $("#cancel-btn").click(function (event) {
+                if (confirm('Cancel add/edit data?')) {
+                    window.location.href = '/dashboard/video'; 
+                }
+            });
+
+            // console.log( "ready!" );
+
+            // var breakpointDefinition = {
+            //     tablet : 1024,
+            //     phone : 480 
+            // };    
+
+            var responsiveHelper_datatable_tabletools = undefined;
+            $('#datatable_video').dataTable({
+                //"processing": true,
+                ajax: {            
+                    //"processing": true,
+                    "url": "/dashboard/video_ajax/",
+                    "dataSrc": ""
+                },
+                columns:[
+                    // {data: "id"},                        
+                    {data: "uuid"},            
+                    {data: "title"},
+                                                 
+                    //{data: "status"},            
+                    {data: "updated_at"},                   
+                    {render: function ( data, type, row ) {
+                        
+                        // return  '<div class="mb-2">' +
+                        //             '<a href="#"><i class="align-middle me-2" data-feather="activity"></i> <span class="align-middle">activity</span></a>' +
+                        //         '</div>';
+                                
+                        return "<div class='toolbar text-right'><button onclick='do_edit(\"" + row.uuid + "\");' class='btn btn-success btn-xs' title='Edit Data'> "+
+                            "Edit"+                                                           
+                            "</button> "+
+                            "<button onclick='do_delete(\"" + row.uuid + "\", \"" + row.name + "\"" + ");' class='btn btn-danger btn-xs' title='Delete Data'> "+
+                            "Delete"+                                                           
+                            "</button>"+
+                            "</div>";
+                        }
+                    },      
+                ],     
+                "order": [[ 2, "desc" ]],   
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    },     
+                    {
+                        "targets": [ 3 ],
+                        "width": 110,                        
+                    },              
+         
+
+
+                ],        
+                
+                //"sDom": "<'dt-toolbar text-right'<'col-xs-12 col-sm-6 hidden-xs'f><'toolbar'>r>"+                
+                //        "t"+
+                //        "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",      
+                "autoWidth" : true,
+                "oLanguage": {
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                },		            
+                "preDrawCallback" : function() {
+                    // Initialize the responsive datatables helper once.
+                    // if (!responsiveHelper_datatable_tabletools) {
+                    //    responsiveHelper_datatable_tabletools = new ResponsiveDatatablesHelper($('#datatable_tabletools'), breakpointDefinition);
+                    // }
+                },
+                "rowCallback" : function(nRow) {
+                    // responsiveHelper_datatable_tabletools.createExpandIcon(nRow);
+                },
+                "drawCallback" : function(oSettings) {
+                    // responsiveHelper_datatable_tabletools.respond();
+                }
+            });
+
+        });
+
+        // console.log($('#datatable_video'));
+        // $('#datatable_video').removeAttr('border-collapse');
+    </script>
+{% endblock %}

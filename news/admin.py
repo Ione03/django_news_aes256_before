@@ -21,7 +21,20 @@ class PhotoAdmin(admin.ModelAdmin):
     # search_fields = ('title',)
     ordering = ('-id',)
 
+class LogoAdmin(admin.ModelAdmin):    
+    # list_filter = ('title',)
+    # list_display = ['title', 'category', 'created_at', 'updated_at']
+    # search_fields = ('title',)
+    ordering = ('-id',)
+
+class VideoAdmin(admin.ModelAdmin):    
+    # list_filter = ('title',)
+    # list_display = ['title', 'category', 'created_at', 'updated_at']
+    # search_fields = ('title',)
+    ordering = ('-id',)
 
 admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Photo, PhotoAdmin)
+admin.site.register(Logo, LogoAdmin)
+admin.site.register(Video, VideoAdmin)

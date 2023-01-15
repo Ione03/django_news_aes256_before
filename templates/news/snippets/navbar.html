@@ -1,4 +1,5 @@
 {% load static %}
+
 <header id="header">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light">
@@ -6,34 +7,38 @@
           <div class="d-flex justify-content-between align-items-center">
             <ul class="navbar-top-left-menu">
               <li class="nav-item">
-                <a href="#" class="nav-link">Tentang Kami</a>
+                <a href="/tentang-kami/" class="nav-link">Tentang Kami</a>
               </li>
               <!-- <li class="nav-item">
                 <a href="#" class="nav-link">Kegiatan</a>
               </li> -->
               <li class="nav-item">
-                <a href="#" class="nav-link">Kirim Tulisan</a>
+                <a href="/kirim-tulisan/" class="nav-link">Kirim Tulisan</a>
               </li>              
             </ul>
             <ul class="navbar-top-right-menu">
               <li class="nav-item">
-                <a href="#" class="nav-link"><i class="mdi mdi-magnify"></i></a>
+                <!-- <a href="#" class="nav-link"><i class="mdi mdi-magnify"></i></a> -->
+              </li> 
+              <li class="nav-item">
+                <a href="/dashboard/" class="nav-link">Masuk</a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">Masuk</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">Daftar</a>
-              </li>
+                <a href="/hubungi-kami/" class="nav-link">Hubungi Kami</a>
+              </li> 
             </ul>
           </div>
         </div>
         <div class="navbar-bottom">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <a class="navbar-brand" href="#"
-                ><img src="{% static '/news/assets/images/logo.svg' %}" alt=""
-              /></a>
+              <a class="navbar-brand" href="/">
+                
+                {% for i in logo %}
+                
+                    <img src="/media/{{i.foto}}" alt=""/>
+                {% endfor %}
+                </a>
             </div>
             <div>
               <button
@@ -66,7 +71,7 @@
                   {% for i in category %}
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">{{i.name}}</a>
+                      <a class="nav-link" href="/news/list/{{i.slug}}/">{{i.name}}</a>
                     </li>
 
                   {% endfor %}
@@ -80,22 +85,24 @@
                   <!-- <li class="nav-item">
                     <a class="nav-link" href="pages/art.html">Olah Raga</a>
                   </li> -->
-                  <li class="nav-item">
+                  <!--<li class="nav-item">
                     <a class="nav-link" href="#">Dokumen</a>
-                  </li>                  
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Hubungi Kami</a>
-                  </li>
+                  </li>                  -->
+                  <!--<li class="nav-item">
+                    <a class="nav-link" href="/hubungi-kami/">Hubungi Kami</a>
+                  </li>-->
                 </ul>
               </div>
             </div>
             <ul class="social-media">
+                {% for i in social_media %}                
               <li>
-                <a href="#">
-                  <i class="mdi mdi-facebook"></i>
+                <a href="{{i.link}}" target="_BLANK">
+                  <i class="mdi mdi-{{i.get_kind_display|lower}}"></i>
                 </a>
               </li>
-              <li>
+                {% endfor %}
+              <!--<li>
                 <a href="#">
                   <i class="mdi mdi-youtube"></i>
                 </a>
@@ -104,7 +111,7 @@
                 <a href="#">
                   <i class="mdi mdi-twitter"></i>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>

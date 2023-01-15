@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />    
-    <title>World Time</title>
+    <title>Diskominfotik Lombok Barat</title>
 
     <!-- plugin css for this page -->
     {% include 'news/snippets/style.html' %}
@@ -32,6 +32,8 @@
 
             {% block videos %}{% endblock %}            
 
+            {% block content %}{% endblock %}            
+
           </div>
         </div>
         <!-- main-panel ends -->
@@ -39,7 +41,7 @@
 
         <!-- partial:partials/_footer.html -->
         <footer>
-          {% block footer %}{% endblock %}
+          {% include 'news/snippets/footer.html' %}
 
           {% include 'news/snippets/footer-bottom.html' %}
         </footer>

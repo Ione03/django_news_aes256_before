@@ -164,12 +164,29 @@ CKEDITOR_CONFIGS = {
         "removePlugins": ("exportpdf","scayt"),
         'extraPlugins': ','.join(
             [
+                'youtube',
                 'embedsemantic',            
                 'autolink',            
                 'codesnippet',                
             ]
         ),
     },
+    'embed_video': {
+        'extraPlugins': ','.join(
+            [
+                'youtube'
+            ]
+        ),        
+        'toolbarCanCollapse': True,
+        'pasteFilter': 'plain-text',    # batasai kemampuan copy paste image ke ckeditor
+
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Source', 'Iframe'],
+            ['Youtube']            
+        ],
+        
+    }
 }
 
 EXPIRED_LINK = 60   # in second 
